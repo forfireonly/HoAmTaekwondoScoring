@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.anna.ho_amtaekwondoscoring.MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha=".35"
+
+        android:src="@drawable/sparring" />
+
+    <TextView
+        android:id="@+id/review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/please_review_rules_of_sparring"
+        android:textStyle="bold"
+        android:textColor="@color/text1"
+        android:textSize="@dimen/size1" />
+
+    <TextView
+        android:id="@+id/first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/review"
+        android:text="@string/_1_competitor_is_awarded_one_point_after_delivering_legal_technique"
+        android:textColor="@color/text2"
+        android:textSize="@dimen/size21"
+        android:layout_marginLeft="@dimen/margin1"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/first"
+        android:layout_marginLeft="@dimen/margin3"
+        android:text="@string/_2_competitor_is_awarded_two_points_after_delivering_jump_kick_to_the_body_or_kick_to_the_head"
+        android:textColor="@color/color3"
+        android:textSize="@dimen/size3"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/second"
+        android:text="@string/_3_competitor_is_awarded_three_points_after_delivering_jump_kick_to_the_head"
+        android:textColor="@color/color4"
+        android:textSize="@dimen/size4"
+        android:layout_marginLeft="@dimen/margin4"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/forth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/third"
+        android:text="@string/_4_competitor_gets_one_strike_after_delivering_illegal_technique"
+        android:textColor="@color/color5"
+        android:textSize="@dimen/size5"
+        android:layout_marginLeft="@dimen/margin5"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/fifth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/forth"
+        android:text="@string/_5_two_strikes_give_opponent_one_point"
+        android:textColor="@color/color6"
+        android:textSize="@dimen/size6"
+        android:layout_marginLeft="@dimen/margin6"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/sixth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fifth"
+        android:text="@string/_6_three_strikes_disqualify_competitor_from_competition"
+        android:textColor="@color/color7"
+        android:textSize="@dimen/size7"
+        android:layout_marginLeft="@dimen/margin7"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/seventh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sixth"
+        android:text="@string/_7_the_person_with_the_most_points_at_the_end_of_sparring_match_is_the_winner"
+        android:textColor="@color/color8"
+        android:textSize="@dimen/size8"
+        android:layout_marginLeft="@dimen/margin8"
+        android:textStyle="bold"/>
+    <Button
+        android:id="@+id/eigth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/seventh"
+        android:text="@string/start_scoring"
+        android:textStyle="bold"
+        android:background="@color/color9"
+        android:onClick="goToActivity2"/>
+</RelativeLayout>

@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Ho-Am Taekwondo Scoring</string>
+    <string name="please_review_rules_of_sparring">Please, Review Rules of Sparring!</string>
+    <string name="_1_competitor_is_awarded_one_point_after_delivering_legal_technique">1.Competitor is awarded one point after delivering legal technique.</string>
+    <string name="_2_competitor_is_awarded_two_points_after_delivering_jump_kick_to_the_body_or_kick_to_the_head">2.Competitor is awarded two points after delivering jump kick to the body or kick to the head.</string>
+    <string name="_3_competitor_is_awarded_three_points_after_delivering_jump_kick_to_the_head">3.Competitor is awarded three points after delivering jump kick to the head.</string>
+    <string name="_4_competitor_gets_one_strike_after_delivering_illegal_technique">4.Competitor gets one strike after delivering illegal technique.</string>
+    <string name="_5_two_strikes_give_opponent_one_point">5.Two strikes give opponent one point.</string>
+    <string name="_6_three_strikes_disqualify_competitor_from_competition">6.Three strikes disqualify competitor from competition.</string>
+    <string name="_7_the_person_with_the_most_points_at_the_end_of_sparring_match_is_the_winner">7.The person with the most points at the end of sparring match is the winner.</string>
+    <string name="start_scoring">Start Scoring</string>
+    <string name="countdown_300_seconds">CountDown 300 seconds</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="stop">Stop</string>
+    <string name="competitor_1">Competitor 1</string>
+    <string name="competitor_2">Competitor 2</string>
+    <string name="_01">0</string>
+    <string name="_11_point">1 point</string>
+    <string name="_22_points">2 points</string>
+    <string name="three_points">three points</string>
+    <string name="_02">0</string>
+    <string name="strike1">strike</string>
+    <string name="_03">0</string>
+    <string name="_12_point">1 point</string>
+    <string name="_21_points">2 points</string>
+    <string name="_31_points">3 points</string>
+    <string name="_0">0</string>
+    <string name="strike">strike</string>
+    <string name="winner1">Winner</string>
+    <string name="reset">reset</string>
+    <string name="winner">Winner</string>
+    <string name="_04">0</string>
+</resources>
