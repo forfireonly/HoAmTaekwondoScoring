@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha=".35"
-        android:src="@drawable/logo" />
+        android:src="@drawable/sparring" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -76,7 +76,7 @@
             android:layout_below="@id/tv"
             android:layout_toRightOf="@id/btn_resume"
             android:background="#F44336"
-            android:text="Stop"
+            android:text="Reset"
             android:textColor="#000000"
             android:textStyle="bold" />
     </RelativeLayout>

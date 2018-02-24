@@ -1,16 +1,28 @@
 package com.example.anna.ho_amtaekwondoscoring;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static java.security.AccessController.getContext;
 
 public class Main2Activity extends AppCompatActivity {
     int competitor1Score;
@@ -38,8 +50,10 @@ public class Main2Activity extends AppCompatActivity {
     //Declare a variable to hold CountDownTimer remaining time
     private long timeRemaining = 0;
 
-    TextView firstCompetitorWinner;
-    TextView secondCompetitorWinner;
+    ImageView firstCompetitorWinner;
+    ImageView secondCompetitorWinner;
+    Dialog competitorOneWon;
+    Dialog competitorTwoWon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +77,18 @@ public class Main2Activity extends AppCompatActivity {
         secondCompetitorWinner=findViewById(R.id.second_competitor);
         mainView = findViewById(R.id.main_view);
 
-        //Initially disabled the pause, resume and cancel button
+
+        competitorOneWon = new Dialog(this);
+        competitorOneWon.setTitle("The Winner of this Match");
+        competitorTwoWon = new Dialog(this);
+        competitorTwoWon.setTitle("The Winner of this Match");
+       // competitorOneWon.setContentView(R.layout.popup1);
+
+
+
+
+
+//Initially disabled the pause, resume and cancel button
         btnPause.setEnabled(false);
         btnResume.setEnabled(false);
         btnCancel.setEnabled(false);
@@ -113,8 +138,12 @@ public class Main2Activity extends AppCompatActivity {
                         {
                         //Do something when count down finished
                         tView.setText("MATCH IS OVER/SEE THE RESULTS BELOW");
-                        if (competitor1Score > competitor2Score) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
-                        if (competitor1Score < competitor2Score) {secondCompetitorWinner.setVisibility(View.VISIBLE);}}
+                        if (competitor1Score > competitor2Score) {
+                            showWinner1();
+                            }
+                        if (competitor1Score < competitor2Score) {
+                            showWinner2();
+                            }}
 
                         //Enable the start button
                         btnStart.setEnabled(true);
@@ -180,8 +209,12 @@ public class Main2Activity extends AppCompatActivity {
                         if (competitor2Score == competitor1Score) {tView.setText("TIME IS UP/NEXT POINT WINS");}
                          else
                         {tView.setText("TIME IS UP");
-                        if (competitor1Score > competitor2Score) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
-                        if (competitor1Score < competitor2Score) {secondCompetitorWinner.setVisibility(View.VISIBLE);}}
+                        if (competitor1Score > competitor2Score) {
+                            showWinner1();
+                            }
+                        if (competitor1Score < competitor2Score) {
+                            showWinner2();
+                            }}
 
                         //Disable the pause, resume and cancel button
                         btnPause.setEnabled(false);
@@ -232,6 +265,7 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -268,18 +302,49 @@ public class Main2Activity extends AppCompatActivity {
         tView.setText(String.valueOf(timeLeft));
 
         }
+    public void showWinner1() {
+        firstCompetitorWinner.setVisibility(View.VISIBLE);
+        competitorOneWon.show();
+        TextView PopUpClose;
+        competitorOneWon.setContentView(R.layout.popup1);
+        PopUpClose =(TextView) competitorOneWon.findViewById(R.id.dismiss1);
+        PopUpClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                competitorOneWon.dismiss();
+                Toast.makeText(getApplicationContext(), "Please, Reset Score and Timer", Toast.LENGTH_LONG).show();
 
+            }
+        });}
+    public void showWinner2() {
+        secondCompetitorWinner.setVisibility(View.VISIBLE);
+        competitorTwoWon.show();
+        TextView PopUpClose2;
+        competitorTwoWon.setContentView(R.layout.popup2);
+        PopUpClose2 =(TextView) competitorTwoWon.findViewById(R.id.dismiss2);
+        PopUpClose2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                competitorTwoWon.dismiss();
+                Toast.makeText(getApplicationContext(), "Please, Reset Score and Timer", Toast.LENGTH_LONG).show();
+            }
+        });}
     public void threeA(View view) {
         competitor1Score = competitor1Score + 1;
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
-        if (competitor1Score >= 5) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor1Score >= 5) {
+        showWinner1();
+                }
+            };
 
-    }
 
     public void twoA(View view) {
         competitor1Score = competitor1Score + 2;
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
-        if (competitor1Score >= 5) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor1Score >= 5) {
+            showWinner1();
+            }
+
 
     }
 
@@ -287,28 +352,36 @@ public class Main2Activity extends AppCompatActivity {
         competitor1Score = competitor1Score + 3;
 
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
-        if (competitor1Score >= 5) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor1Score >= 5) {
+            showWinner1();
+            }
 
     }
 
     public void threeB(View view) {
         competitor2Score = competitor2Score + 1;
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
-        if (competitor2Score >= 5) {secondCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor2Score >= 5) {
+        showWinner2();
+        }
 
     }
 
     public void twoB(View view) {
         competitor2Score = competitor2Score + 2;
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
-        if (competitor2Score >= 5) {secondCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor2Score >= 5) {
+            showWinner2();
+            }
 
     }
 
     public void oneB(View view) {
         competitor2Score = competitor2Score + 3;
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
-        if (competitor2Score >= 5) {secondCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitor2Score >= 5) {
+            showWinner2();
+            }
 
     }
 
@@ -331,9 +404,14 @@ public class Main2Activity extends AppCompatActivity {
         competitorOneStrikeView.setText(String.valueOf(competitorOneStrike));
         if (competitorOneStrike == 2) {
             competitor2Score = competitor2Score + 1;
+            if (competitor2Score >= 5) {
+                showWinner2();
+                }
         }
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
-        if (competitorOneStrike >= 3) {secondCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitorOneStrike >= 3) {
+            showWinner2();
+             }
 
 
 
@@ -344,13 +422,21 @@ public class Main2Activity extends AppCompatActivity {
         competitorTwoStrikeView.setText(String.valueOf(competitorTwoStrike));
         if (competitorTwoStrike == 2) {
             competitor1Score = competitor1Score + 1;
+            if (competitor1Score >= 5) {
+                showWinner1();
+                }
         }
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
-        if (competitorTwoStrike >= 3) {firstCompetitorWinner.setVisibility(View.VISIBLE);}
+        if (competitorTwoStrike >= 3) {
+            showWinner1();
+            }
 
 
     }
 }
+
+
+
 
 
 
