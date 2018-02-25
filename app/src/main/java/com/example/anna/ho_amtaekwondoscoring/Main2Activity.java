@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.CountDownTimer;
+import android.support.annotation.BinderThread;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,20 +22,23 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static android.widget.Toast.LENGTH_LONG;
 import static java.security.AccessController.getContext;
 
 public class Main2Activity extends AppCompatActivity {
     int competitor1Score;
     int competitor2Score;
-    LinearLayout mainView;
-    TextView competitor1ScoreView;
-    TextView competitorOneStrikeView;
-    TextView competitorTwoStrikeView;
-    TextView tView;
+    @BindView(R.id.main_view) LinearLayout mainView;
+    @BindView(R.id.team_a_score) TextView competitor1ScoreView;
+    @BindView(R.id.team_a_strike) TextView competitorOneStrikeView;
+    @BindView(R.id.team_b_strike) TextView competitorTwoStrikeView;
+    @BindView(R.id.tv) TextView tView;
     int competitorOneStrike;
     int competitorTwoStrike;
-    TextView competitor2ScoreView;
+    @BindView(R.id.team_b_score) TextView competitor2ScoreView;
     long timeLeft;
 
 
@@ -50,10 +54,15 @@ public class Main2Activity extends AppCompatActivity {
     //Declare a variable to hold CountDownTimer remaining time
     private long timeRemaining = 0;
 
-    ImageView firstCompetitorWinner;
-    ImageView secondCompetitorWinner;
+    @BindView(R.id.first_competitor) ImageView firstCompetitorWinner;
+    @BindView(R.id.second_competitor) ImageView secondCompetitorWinner;
     Dialog competitorOneWon;
     Dialog competitorTwoWon;
+
+    @BindView(R.id.btn_start)  Button btnStart;
+    @BindView(R.id.btn_pause) Button btnPause;
+    @BindView(R.id.btn_resume) Button btnResume;
+    @BindView(R.id.btn_cancel) Button btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +72,21 @@ public class Main2Activity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
+
         //Get reference of the XML layout's widgets
-         tView = (TextView) findViewById(R.id.tv);
-        final Button btnStart = (Button) findViewById(R.id.btn_start);
-        final Button btnPause = (Button) findViewById(R.id.btn_pause);
-        final Button btnResume = (Button) findViewById(R.id.btn_resume);
-        final Button btnCancel = (Button) findViewById(R.id.btn_cancel);
-        competitor1ScoreView = findViewById(R.id.team_a_score);
-        competitor2ScoreView = findViewById(R.id.team_b_score);
-        competitorOneStrikeView = findViewById(R.id.team_a_strike);
-        competitorTwoStrikeView = findViewById(R.id.team_b_strike);
-        firstCompetitorWinner=findViewById(R.id.first_competitor);
-        secondCompetitorWinner=findViewById(R.id.second_competitor);
-        mainView = findViewById(R.id.main_view);
+         //tView = (TextView) findViewById(R.id.tv);
+        //final Button btnStart = (Button) findViewById(R.id.btn_start);
+       // final Button btnPause = (Button) findViewById(R.id.btn_pause);
+       // final Button btnResume = (Button) findViewById(R.id.btn_resume);
+        //final Button btnCancel = (Button) findViewById(R.id.btn_cancel);
+        //competitor1ScoreView = findViewById(R.id.team_a_score);
+        //competitor2ScoreView = findViewById(R.id.team_b_score);
+       // competitorOneStrikeView = findViewById(R.id.team_a_strike);
+       // competitorTwoStrikeView = findViewById(R.id.team_b_strike);
+       // firstCompetitorWinner=findViewById(R.id.first_competitor);
+       // secondCompetitorWinner=findViewById(R.id.second_competitor);
+        //mainView = findViewById(R.id.main_view);
 
 
         competitorOneWon = new Dialog(this);
