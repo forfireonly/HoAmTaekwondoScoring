@@ -28,41 +28,42 @@ import butterknife.ButterKnife;
 import static android.widget.Toast.LENGTH_LONG;
 import static java.security.AccessController.getContext;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends AppCompatActivity implements View.OnClickListener {
+    static final String COMPETITOR_1_Score = "score";
+    static final String COMPETITOR_2_Score = "score";
+    static final String COMPETITOR_1_Strike = "strike";
+    static final String COMPETITOR_2_Strike = "strike";
+    static final String TIMER = "seconds";
     int competitor1Score;
     int competitor2Score;
-    @BindView(R.id.main_view) LinearLayout mainView;
-    @BindView(R.id.team_a_score) TextView competitor1ScoreView;
-    @BindView(R.id.team_a_strike) TextView competitorOneStrikeView;
-    @BindView(R.id.team_b_strike) TextView competitorTwoStrikeView;
-    @BindView(R.id.tv) TextView tView;
+    @BindView(R.id.main_view)
+    LinearLayout mainView;
+    @BindView(R.id.team_a_score)
+    TextView competitor1ScoreView;
+    @BindView(R.id.team_a_strike)
+    TextView competitorOneStrikeView;
+    @BindView(R.id.team_b_strike)
+    TextView competitorTwoStrikeView;
+    @BindView(R.id.tv)
+    TextView tView;
     int competitorOneStrike;
     int competitorTwoStrike;
-    @BindView(R.id.team_b_score) TextView competitor2ScoreView;
+    @BindView(R.id.team_b_score)
+    TextView competitor2ScoreView;
     long timeLeft;
+    @BindView(R.id.first_competitor)
+    ImageView firstCompetitorWinner;
+    @BindView(R.id.second_competitor)
+    ImageView secondCompetitorWinner;
+    Dialog competitorOneWon;
+    Dialog competitorTwoWon;
 
-
-    static final String COMPETITOR_1_Score="score";
-    static final String COMPETITOR_2_Score="score";
-    static final String COMPETITOR_1_Strike="strike";
-    static final String COMPETITOR_2_Strike="strike";
-    static final String TIMER="seconds";
     //Declare a variable to hold count down timer's paused status
     private boolean isPaused = false;
     //Declare a variable to hold count down timer's paused status
     private boolean isCanceled = false;
     //Declare a variable to hold CountDownTimer remaining time
     private long timeRemaining = 0;
-
-    @BindView(R.id.first_competitor) ImageView firstCompetitorWinner;
-    @BindView(R.id.second_competitor) ImageView secondCompetitorWinner;
-    Dialog competitorOneWon;
-    Dialog competitorTwoWon;
-
-    @BindView(R.id.btn_start)  Button btnStart;
-    @BindView(R.id.btn_pause) Button btnPause;
-    @BindView(R.id.btn_resume) Button btnResume;
-    @BindView(R.id.btn_cancel) Button btnCancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,38 +76,167 @@ public class Main2Activity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //Get reference of the XML layout's widgets
-         //tView = (TextView) findViewById(R.id.tv);
-        //final Button btnStart = (Button) findViewById(R.id.btn_start);
-       // final Button btnPause = (Button) findViewById(R.id.btn_pause);
-       // final Button btnResume = (Button) findViewById(R.id.btn_resume);
-        //final Button btnCancel = (Button) findViewById(R.id.btn_cancel);
-        //competitor1ScoreView = findViewById(R.id.team_a_score);
-        //competitor2ScoreView = findViewById(R.id.team_b_score);
-       // competitorOneStrikeView = findViewById(R.id.team_a_strike);
-       // competitorTwoStrikeView = findViewById(R.id.team_b_strike);
-       // firstCompetitorWinner=findViewById(R.id.first_competitor);
-       // secondCompetitorWinner=findViewById(R.id.second_competitor);
-        //mainView = findViewById(R.id.main_view);
+        final TextView tView = (TextView) findViewById(R.id.tv);
+        final Button btnStart = (Button) findViewById(R.id.btn_start);
+        final Button btnPause = (Button) findViewById(R.id.btn_pause);
+        final Button btnResume = (Button) findViewById(R.id.btn_resume);
+        final Button btnCancel = (Button) findViewById(R.id.btn_cancel);
 
 
-        competitorOneWon = new Dialog(this);
-        competitorOneWon.setTitle("The Winner of this Match");
-        competitorTwoWon = new Dialog(this);
-        competitorTwoWon.setTitle("The Winner of this Match");
-       // competitorOneWon.setContentView(R.layout.popup1);
+        btnStart.setOnClickListener(this);
+
+        btnPause.setOnClickListener(this);
+
+        btnResume.setOnClickListener(this);
+
+        btnCancel.setOnClickListener(this);
+        btnPause.setEnabled(true);
+        btnResume.setEnabled(true);
+        btnCancel.setEnabled(true); }
+
+    @Override
+    public void onClick(View v) {
+        // Perform action on click
+        switch(v.getId()) {
+            case R.id.btn_start:
+                isPaused = false;
+                isCanceled = false;
+
+                //Disable the start and pause button
+                //btnStart.setEnabled(false);
+                //btnResume.setEnabled(false);
+                //Enabled the pause and cancel button
+                //btnPause.setEnabled(true);
+                //btnCancel.setEnabled(true);
+
+                CountDownTimer timer;
+                long millisInFuture = 300000; //30 seconds
+                long countDownInterval = 1000; //1 second
 
 
+                //Initialize a new CountDownTimer instance
+                timer = new CountDownTimer(millisInFuture, countDownInterval) {
+                    public void onTick(long millisUntilFinished) {
+                        //do something in every tick
+                        if (isPaused || isCanceled) {
+                            //If the user request to cancel or paused the
+                            //CountDownTimer we will cancel the current instance
+                            cancel();
+                        } else {
+                            //Display the remaining seconds to app interface
+                            //1 second = 1000 milliseconds
+                            tView.setText("" + millisUntilFinished / 1000+" SECONDS LEFT ");
+                            //Put count down timer remaining time in a variable
+                            timeRemaining = millisUntilFinished;
 
+                        }
+                    }
 
+                    public void onFinish() {
+                        if (competitor2Score == competitor1Score) {tView.setText("SUDDEN DEATH/NEXT POINT WINS");}
+                        else
+                        {
+                            //Do something when count down finished
+                            tView.setText("MATCH IS OVER/SEE THE RESULTS BELOW");
+                            if (competitor1Score > competitor2Score) {
+                                showWinner1();
+                            }
+                            if (competitor1Score < competitor2Score) {
+                                showWinner2();
+                            }}
 
-//Initially disabled the pause, resume and cancel button
-        btnPause.setEnabled(false);
-        btnResume.setEnabled(false);
-        btnCancel.setEnabled(false);
+                        //Enable the start button
+                        //btnStart.setEnabled(true);
+                        //Disable the pause, resume and cancel button
+                        //btnPause.setEnabled(false);
+                        //btnResume.setEnabled(false);
+                        //btnCancel.setEnabled(false);
+                    }
+                }.start();
+                break;
+            case R.id.btn_pause:
+                isPaused = true;
+
+                //Enable the resume and cancel button
+                //btnResume.setEnabled(true);
+                //btnCancel.setEnabled(true);
+                //Disable the start and pause button
+                //btnStart.setEnabled(false);
+                //btnPause.setEnabled(false);
+                ;
+                break;
+            case R.id.btn_resume:
+                //Disable the start and resume button
+                //btnStart.setEnabled(false);
+                //btnResume.setEnabled(false);
+                //Enable the pause and cancel button
+                //btnPause.setEnabled(true);
+                //btnCancel.setEnabled(true);
+
+                //Specify the current state is not paused and canceled.
+                isPaused = false;
+                isCanceled = false;
+
+                //Initialize a new CountDownTimer instance
+                millisInFuture = timeRemaining;
+                countDownInterval = 1000;
+                new CountDownTimer(millisInFuture, countDownInterval) {
+                    public void onTick(long millisUntilFinished) {
+                        //Do something in every tick
+                        if (isPaused || isCanceled) {
+                            //If user requested to pause or cancel the count down timer
+                            cancel();
+                        } else {
+                            tView.setText("" + millisUntilFinished / 1000 + " SECONDS LEFT");
+                            //Put count down timer remaining time in a variable
+                            timeRemaining = millisUntilFinished;
+
+                        }
+                    }
+
+                    public void onFinish() {
+                        //Do something when count down finished
+                        if (competitor2Score == competitor1Score) {tView.setText("TIME IS UP/NEXT POINT WINS");}
+                        else
+                        {tView.setText("TIME IS UP");
+                            if (competitor1Score > competitor2Score) {
+                                showWinner1();
+                            }
+                            if (competitor1Score < competitor2Score) {
+                                showWinner2();
+                            }}
+
+                        //Disable the pause, resume and cancel button
+                        //btnPause.setEnabled(false);
+                       // btnResume.setEnabled(false);
+                        //btnCancel.setEnabled(false);
+                        //Enable the start button
+                        //btnStart.setEnabled(true);
+                    }
+                }.start();
+
+                break;
+            case R.id.btn_cancel:
+                //When user request to cancel the CountDownTimer
+                isCanceled = true;
+
+                //Disable the cancel, pause and resume button
+                //btnPause.setEnabled(false);
+                //btnResume.setEnabled(false);
+                //btnCancel.setEnabled(false);
+                //Enable the start button
+                //btnStart.setEnabled(true);
+
+                //Notify the user that CountDownTimer is canceled/stopped
+                tView.setText("CountDown 300 seconds");
+                break;
+        }
+
+    }
 
 
         //Set a Click Listener for start button
-        btnStart.setOnClickListener(new View.OnClickListener() {
+     /*   btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -166,6 +296,7 @@ public class Main2Activity extends AppCompatActivity {
                 }.start();
             }
         });
+
 
         //Set a Click Listener for pause button
         btnPause.setOnClickListener(new View.OnClickListener() {
@@ -274,10 +405,9 @@ public class Main2Activity extends AppCompatActivity {
                 //Notify the user that CountDownTimer is canceled/stopped
                 tView.setText("CountDown 300 seconds");
             }
-        });
+        );
+*/
 
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -290,6 +420,7 @@ public class Main2Activity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -299,26 +430,28 @@ public class Main2Activity extends AppCompatActivity {
         outState.putInt(COMPETITOR_2_Strike, competitorTwoStrike);
         outState.putLong(TIMER, timeLeft);
     }
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         competitor1Score = savedInstanceState.getInt(COMPETITOR_1_Score);
-        competitor1ScoreView .setText(String.valueOf(competitor1Score));
+        competitor1ScoreView.setText(String.valueOf(competitor1Score));
         competitor2Score = savedInstanceState.getInt(COMPETITOR_2_Score);
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
-        competitorOneStrike=savedInstanceState.getInt(COMPETITOR_1_Score);
+        competitorOneStrike = savedInstanceState.getInt(COMPETITOR_1_Score);
         competitorOneStrikeView.setText(String.valueOf(competitorOneStrike));
         competitorTwoStrike = savedInstanceState.getInt(COMPETITOR_2_Strike);
         competitorTwoStrikeView.setText(String.valueOf(competitorTwoStrike));
         timeLeft = savedInstanceState.getInt(TIMER);
         tView.setText(String.valueOf(timeLeft));
 
-        }
+    }
+
     public void showWinner1() {
         firstCompetitorWinner.setVisibility(View.VISIBLE);
         competitorOneWon.show();
         TextView PopUpClose;
         competitorOneWon.setContentView(R.layout.popup1);
-        PopUpClose =(TextView) competitorOneWon.findViewById(R.id.dismiss1);
+        PopUpClose = (TextView) competitorOneWon.findViewById(R.id.dismiss1);
         PopUpClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -326,27 +459,33 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Please, Reset Score and Timer", Toast.LENGTH_LONG).show();
 
             }
-        });}
+        });
+    }
+
     public void showWinner2() {
         secondCompetitorWinner.setVisibility(View.VISIBLE);
         competitorTwoWon.show();
         TextView PopUpClose2;
         competitorTwoWon.setContentView(R.layout.popup2);
-        PopUpClose2 =(TextView) competitorTwoWon.findViewById(R.id.dismiss2);
+        PopUpClose2 = (TextView) competitorTwoWon.findViewById(R.id.dismiss2);
         PopUpClose2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 competitorTwoWon.dismiss();
                 Toast.makeText(getApplicationContext(), "Please, Reset Score and Timer", Toast.LENGTH_LONG).show();
             }
-        });}
+        });
+    }
+
     public void threeA(View view) {
         competitor1Score = competitor1Score + 1;
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
         if (competitor1Score >= 5) {
-        showWinner1();
-                }
-            };
+            showWinner1();
+        }
+    }
+
+    ;
 
 
     public void twoA(View view) {
@@ -354,7 +493,7 @@ public class Main2Activity extends AppCompatActivity {
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
         if (competitor1Score >= 5) {
             showWinner1();
-            }
+        }
 
 
     }
@@ -365,7 +504,7 @@ public class Main2Activity extends AppCompatActivity {
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
         if (competitor1Score >= 5) {
             showWinner1();
-            }
+        }
 
     }
 
@@ -373,7 +512,7 @@ public class Main2Activity extends AppCompatActivity {
         competitor2Score = competitor2Score + 1;
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
         if (competitor2Score >= 5) {
-        showWinner2();
+            showWinner2();
         }
 
     }
@@ -383,7 +522,7 @@ public class Main2Activity extends AppCompatActivity {
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
         if (competitor2Score >= 5) {
             showWinner2();
-            }
+        }
 
     }
 
@@ -392,7 +531,7 @@ public class Main2Activity extends AppCompatActivity {
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
         if (competitor2Score >= 5) {
             showWinner2();
-            }
+        }
 
     }
 
@@ -417,13 +556,12 @@ public class Main2Activity extends AppCompatActivity {
             competitor2Score = competitor2Score + 1;
             if (competitor2Score >= 5) {
                 showWinner2();
-                }
+            }
         }
         competitor2ScoreView.setText(String.valueOf(competitor2Score));
         if (competitorOneStrike >= 3) {
             showWinner2();
-             }
-
+        }
 
 
     }
@@ -435,12 +573,12 @@ public class Main2Activity extends AppCompatActivity {
             competitor1Score = competitor1Score + 1;
             if (competitor1Score >= 5) {
                 showWinner1();
-                }
+            }
         }
         competitor1ScoreView.setText(String.valueOf(competitor1Score));
         if (competitorTwoStrike >= 3) {
             showWinner1();
-            }
+        }
 
 
     }
